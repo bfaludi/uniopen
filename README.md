@@ -18,5 +18,10 @@ Open a Database connection:
 
 	with uniopen.Open('postresql://username:password@host:port/dbname') as rs:
 		print(rs.execute('SELECT * FROM table_name;'))
-		
+
+Open a file via SSH connection:
+
+	with uniopen.Open('ssh://username:password@host:port/home/username/example/file.csv', 'r') as rs:
+		print(rs.read())
+	
 Enjoy!

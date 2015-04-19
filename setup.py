@@ -15,7 +15,8 @@ setup(
     author_email = 'bence@ozmo.hu',
     license = 'GPL',
     install_requires = [
-        'sqlalchemy'
+        'sqlalchemy',
+        'paramiko'
     ],
     test_suite = "uniopen.tests",
     url = 'http://bfaludi.com'
