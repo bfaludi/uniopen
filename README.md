@@ -6,7 +6,7 @@ It's so simple. You can open things with it, that's the story. Nothing more. It 
 
 Open a local file:
 	
-	with uniopen.Open('file.csv', 'r') as rs:
+	with uniopen.Open('file.csv', 'r', encoding = 'utf-8') as rs:
 		print(rs.read())
 		
 Open an URL:
@@ -29,11 +29,6 @@ Open a file via SSH connection:
 	with uniopen.Open('ssh://username:password@host:port/home/username/example/file.csv', 'r') as rs:
 		print(rs.read())
 	
-Open a file via SSH connection:
-
-	with uniopen.Open('ssh://username:password@host:port/home/username/example/file.csv', 'r') as rs:
-		print(rs.read())
-		
 Open a file in Amazon S3 bucket:
 
 	with uniopen.Open('s3://key_id:secret_key@bucket/file.csv') as rs:
