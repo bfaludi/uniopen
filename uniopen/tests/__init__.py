@@ -3,6 +3,7 @@ import io
 import os
 import unittest
 import uniopen
+import smart_open
 
 class Test_Opener( unittest.TestCase ):
 
@@ -31,7 +32,15 @@ class Test_Opener( unittest.TestCase ):
     def test_db_opener( self ):
         with uniopen.Open('sqlite:///uniopen/tests/source/sqlite.db') as rs:
             self.assertIsNotNone(rs)
+            
+    def __test_redshift_opener( self ):
+        with uniopen.Open('redshift://username:password@endpoint:port/database') as rs:
+            self.assertIsNotNone(rs)
+            
+    def __test_s3_opener( self ):
+        with uniopen.Open('s3://key_id:secret_key@bucket/filename.txt') as rs:
+            self.assertIsNotNone(rs)
 
-    # def test_ssh_opener( self ):
-    #     with uniopen.Open('ssh://uname:password@host/file/path', 'r') as rs:
-    #         self.assertIsNotNone(rs)
+    def __test_ssh_opener( self ):
+        with uniopen.Open('ssh://username:password@host/file/path', 'r') as rs:
+            self.assertIsNotNone(rs)

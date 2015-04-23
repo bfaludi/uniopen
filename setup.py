@@ -2,7 +2,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '1.0.1'
+version = '1.0.2'
 
 setup(
     name = 'uniopen',
@@ -16,7 +16,9 @@ setup(
     license = 'GPL',
     install_requires = [
         'sqlalchemy',
-        'paramiko'
+        'paramiko',
+        'smart_open',
+        'redshift_sqlalchemy',
     ],
     test_suite = "uniopen.tests",
     url = 'http://bfaludi.com'

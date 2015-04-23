@@ -4,6 +4,7 @@ import sys
 import sqlalchemy
 import paramiko
 import socket
+import smart_open
 
 PY3 = sys.version_info[0] == 3
 if PY3:
@@ -24,9 +25,11 @@ else:
     fopen = io.open
 
 DATABASE_SCHEME = sqlalchemy.dialects.__all__
-LOCALE_FILE_SCHEME = ('file', '')
-URL_SCHEME = ('http','https','ftp')
-SSH_SCHEME = ('ssh')
+LOCALE_FILE_SCHEME = ('file', '',)
+URL_SCHEME = ('http','https','ftp',)
+SSH_SCHEME = ('ssh',)
+SO_SCHEME = ('s3','s3n','hdfs',)
+REDSHIFT_SCHEME = ('redshift',)
 
 class SSHOpener(object):
     def __init__(self, parsed_url, mode, use_ggs_api = False, do_ggs_api_key_exchange = False):
@@ -114,20 +117,24 @@ class SchemeNotImplemented(RuntimeError):
 class Open(object):
     def __new__(cls, uri, *args, **kwargs):        
         parsed_uri = urlparse(uri)
-        
+        schemes = set(parsed_uri.scheme.lower().split('+'))
+            
         if kwargs.get('opener') is not None:
             return kwargs.get('opener')(parsed_uri.path, *args, **kwargs)
             
-        elif parsed_uri.scheme.lower() in DATABASE_SCHEME:
+        elif schemes & (set(DATABASE_SCHEME) | set(REDSHIFT_SCHEME)):
             return DatabaseOpener(uri)
         
-        elif parsed_uri.scheme.lower() in LOCALE_FILE_SCHEME:
+        elif schemes & set(LOCALE_FILE_SCHEME):
             return LocaleFileOpener(parsed_uri.path, *args, **kwargs)
             
-        elif parsed_uri.scheme.lower() in URL_SCHEME:
+        elif schemes & set(URL_SCHEME):
             return URLOpener(uri)
             
-        elif parsed_uri.scheme.lower() in SSH_SCHEME:
+        elif schemes & set(SSH_SCHEME):
             return SSHOpener(parsed_uri, *args, **kwargs)
+            
+        elif schemes & set(SO_SCHEME):
+            return smart_open.smart_open(uri, *args, **kwargs)
             
         raise SchemeNotImplemented()
