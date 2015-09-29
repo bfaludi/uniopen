@@ -18,7 +18,7 @@ setup(
         'sqlalchemy',
         'paramiko',
         'smart_open',
-        'redshift_sqlalchemy',
+        'sqlalchemy-redshift',
     ],
     test_suite = "uniopen.tests",
     url = 'http://bfaludi.com'
